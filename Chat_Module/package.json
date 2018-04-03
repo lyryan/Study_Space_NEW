@@ -1,0 +1,16 @@
+{
+  "name": "studyspace",
+  "version": "0.0.1",
+  "description": "Study Space Chat Service",
+  "main": "Study_Space_Chat_Service.js",
+  "scripts": {
+    "test": "\u001b[A\u001b[B"
+  },
+  "author": "Group 9",
+  "license": "ISC",
+  "dependencies":
+  {
+    "socket.io":"*",
+    "express": "*"
+  }
+}

@@ -1,0 +1,155 @@
+<!doctype html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>Untitled Document</title>
+
+<link href="untitled.css" rel="stylesheet" type="text/css">
+
+	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+	<script src="socket.io/socket.io.js"></script>
+
+	<script>
+		console.log("attempting connection");
+        $(function () {
+            let socket = io();
+            let $userFormArea = $('#userFormArea');
+            let $userForm = $('#userForm');
+            let $UserName_Input_Field = $('#UserName_Input_Field');
+            let $User_Name_Submit = $('#User_Name_Submit');
+            let $messageArea = $('#messageArea');
+            let $messageForm = $('#messageForm');
+            let $Input_Field = $('#Input_Field');
+            let $Text_Chat_Box = $('#Text_Chat_Box');
+
+            $messageForm.submit(function (e)
+			{
+				e.preventDefault();
+				console.log($Input_Field.val())
+				socket.emit('Send Message', $Input_Field.val());
+				$Input_Field.val('');
+            });
+
+
+            $userForm.submit(function (e)
+			{
+
+                e.preventDefault();
+
+				socket.emit('new user', $UserName_Input_Field.val(), function (data)
+				{
+					if(data)
+					{
+                        $userFormArea.hide();
+                        $messageArea.show();
+					}
+                });
+				$UserName_Input_Field.val('');
+
+            });
+
+            socket.on('new message', function(data)
+			{
+				console.log(data.msg);
+                $Text_Chat_Box.append('<p id = "message">'+ data.user + ' : '+data.msg+'</p>');
+			})
+
+
+
+			socket.on('get users', function(data)
+			{
+				var html = '';
+				for (i=0; i< data.length; i++)
+				{
+				    html += '<li class = "list-group-item" >';
+				}
+			})
+        });
+
+
+
+		console.log('connected');
+	</script>
+
+</head>
+
+
+
+<body>
+
+	<div id = "userFormArea">
+		<form id="userForm">
+
+			<label id = "Enter_User_Name_Label">Enter User Name</label>
+			<textarea id= "UserName_Input_Field" cols="30" rows = "6" ></textarea>
+			<input id ="User_Name_Submit" type="submit" value = "Login"/>
+
+
+		</form>
+
+	</div>
+
+
+	<div id = "messageArea">
+
+	<div id = "Feature_Selector">
+
+		<button id= "Text_Chat_Button">
+			Text Chat
+		</button>
+
+		<button id= "Video_Sync_Button" >
+			Video Sync
+		</button>
+
+		<button id= "White_Board_Button" >
+			White Board
+		</button>
+
+		<button id= "Study_Room_Files" >
+			Study Room Files
+		</button>
+
+	</div>
+
+	<div id = "User_Info">
+
+		<button id="User_Settings_Button" background=" url(/download.jpg)"> </button>
+
+		<label id="Study_Room_Selctor"> CMPE-131 </label>
+
+	</div>
+
+	<div class = "Text_Chat_Box" id = "Text_Chat_Box">
+
+
+
+	</div>
+
+
+
+	<form id="messageForm">
+
+
+		<textarea id= "Input_Field" cols="30" rows = "6" ></textarea>
+		<input id ="submit" type="submit" value = "Send Message"/>
+
+
+	</form>
+
+	</div>
+
+</body>
+
+
+
+
+
+
+
+</html>
